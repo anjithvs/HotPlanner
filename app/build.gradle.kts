@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace    = "com.yourname.taskflow"   // ← CHANGE THIS to your package name
+    namespace    = "com.example.hotplanner"   // ← CHANGE THIS to your package name
     compileSdk   = 35
 
     defaultConfig {
-        applicationId            = "com.yourname.taskflow"  // ← CHANGE THIS too
+        applicationId            = "com.example.hotplanner"  // ← CHANGE THIS too
         minSdk                   = 26
         targetSdk                = 35
         versionCode              = 1
