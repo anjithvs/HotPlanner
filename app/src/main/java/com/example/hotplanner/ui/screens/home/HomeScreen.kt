@@ -32,12 +32,8 @@ fun HomeScreen(
     var showAddTask   by remember { mutableStateOf(false) }
     var deleteTarget  by remember { mutableStateOf<TaskWithSubTasks?>(null) }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
+    Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+        Column(modifier = Modifier.fillMaxSize()) {
             // ── Header ────────────────────────────────────────────────────────
             HomeHeader(taskCount = activeTasks.size)
 
