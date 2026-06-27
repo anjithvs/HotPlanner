@@ -23,7 +23,7 @@ object AppModule {
         return Room.databaseBuilder(
             context,
             TaskDatabase::class.java,
-            "taskflow_database"         // Name of the .db file on device
+            "hotplanner_database"         // Name of the .db file on device
         ).build()
     }
 
