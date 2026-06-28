@@ -19,6 +19,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.hotplanner.ui.theme.LocalAppColors
+import com.example.hotplanner.ui.utils.HapticType
+import com.example.hotplanner.ui.utils.rememberAppHaptic
 import com.example.hotplanner.data.model.SubTask
 import com.example.hotplanner.data.model.TaskWithSubTasks
 import com.example.hotplanner.ui.components.AddSubtaskSheet
@@ -53,6 +55,8 @@ fun TaskDetailScreen(
 
     val sortedSubs          = taskWithSubTasks.subTasks.sortedBy { it.orderIndex }
     var insertAfterIndex    by remember { mutableStateOf<Int?>(null) }
+    val hapticsEnabled      by viewModel.haptics.collectAsState()
+    val haptic              = rememberAppHaptic(hapticsEnabled)
 
     Column(
         modifier = Modifier
@@ -102,6 +106,7 @@ fun TaskDetailScreen(
                     SubtaskRow(
                         subTask = subTask,
                         index   = index,
+                        haptic   = haptic,
                         onToggle = {
                             viewModel.toggleSubTask(taskWithSubTasks, subTask)
                         }
@@ -257,6 +262,7 @@ private fun DetailHeader(taskWithSubTasks: TaskWithSubTasks, onBack: () -> Unit)
 private fun SubtaskRow(
     subTask: SubTask,
     index: Int,
+    haptic: (HapticType) -> Unit,
     onToggle: () -> Unit
 ) {
     val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
@@ -323,7 +329,8 @@ private fun SubtaskRow(
             // Checkbox
             Checkbox(
                 checked         = subTask.isDone,
-                onCheckedChange = { onToggle() },
+                onCheckedChange = { haptic(HapticType.TICK)
+                    onToggle() },
                 colors          = CheckboxDefaults.colors(
                     checkedColor   = Color(0xFF27AE60),
                     uncheckedColor = Latte,

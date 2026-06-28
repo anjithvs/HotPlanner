@@ -3,6 +3,8 @@ package com.example.hotplanner.ui.screens.home
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import com.example.hotplanner.ui.theme.LocalAppColors
+import com.example.hotplanner.ui.utils.HapticType
+import com.example.hotplanner.ui.utils.rememberAppHaptic
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,6 +35,8 @@ fun HomeScreen(
     val activeTasks   by viewModel.activeTasks.collectAsState()
     var showAddTask   by remember { mutableStateOf(false) }
     var deleteTarget  by remember { mutableStateOf<TaskWithSubTasks?>(null) }
+    val hapticsEnabled by viewModel.haptics.collectAsState()
+    val haptic         = rememberAppHaptic(hapticsEnabled)
 
     Box(modifier = Modifier.fillMaxSize().padding(padding)) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -56,7 +60,8 @@ fun HomeScreen(
                             modifier         = Modifier.animateItem(),
                             onTap            = { onNavigateToDetail(taskWithSubs.task.id) },
                             onComplete       = { viewModel.completeTask(taskWithSubs) },
-                            onDelete         = { deleteTarget = taskWithSubs }
+                            onDelete         = { deleteTarget = taskWithSubs },
+                            haptic           = haptic                              // ← ADD THIS
                         )
                     }
                 }
@@ -165,7 +170,8 @@ private fun TaskCard(
     modifier: Modifier = Modifier,
     onTap: () -> Unit,
     onComplete: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    haptic: (HapticType) -> Unit
 ) {
     val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val task      = taskWithSubTasks.task
@@ -296,7 +302,7 @@ private fun TaskCard(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Button(
-                onClick          = onComplete,
+                onClick = { haptic(HapticType.CONFIRM); onComplete() },
                 modifier         = Modifier.weight(1f),
                 shape            = RoundedCornerShape(12.dp),
                 colors           = ButtonDefaults.buttonColors(containerColor = Color(0xFF27AE60)),
@@ -306,7 +312,7 @@ private fun TaskCard(
                     fontWeight = FontWeight.Bold, fontSize = 12.sp)
             }
             Button(
-                onClick          = onDelete,
+                onClick = { haptic(HapticType.WARNING); onDelete() },
                 modifier         = Modifier.weight(1f),
                 shape            = RoundedCornerShape(12.dp),
                 colors           = ButtonDefaults.buttonColors(containerColor = PriorityHigh),

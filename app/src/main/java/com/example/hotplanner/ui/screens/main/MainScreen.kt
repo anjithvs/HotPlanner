@@ -10,6 +10,9 @@ import androidx.compose.ui.unit.sp
 import com.example.hotplanner.ui.components.CelebrationBanner
 import com.example.hotplanner.ui.components.ConfettiOverlay
 import com.example.hotplanner.ui.theme.LocalAppColors
+import androidx.compose.runtime.LaunchedEffect
+import com.example.hotplanner.ui.utils.HapticType
+import com.example.hotplanner.ui.utils.rememberAppHaptic
 import com.example.hotplanner.ui.screens.completed.CompletedScreen
 import com.example.hotplanner.ui.screens.home.HomeScreen
 import com.example.hotplanner.ui.screens.settings.SettingsScreen
@@ -26,6 +29,13 @@ fun MainScreen(
 
     val showConfetti    by viewModel.showConfetti.collectAsState()
     val showCelebration by viewModel.showCelebration.collectAsState()
+    val hapticsEnabled  by viewModel.haptics.collectAsState()
+    val haptic          = rememberAppHaptic(hapticsEnabled)
+
+    // Pulse haptic when celebration fires
+    LaunchedEffect(showCelebration) {
+        if (showCelebration) haptic(HapticType.CONFIRM)
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
 

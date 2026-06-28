@@ -2,6 +2,8 @@ package com.example.hotplanner.ui.screens.completed
 
 import androidx.compose.foundation.background
 import com.example.hotplanner.ui.theme.LocalAppColors
+import com.example.hotplanner.ui.utils.HapticType
+import com.example.hotplanner.ui.utils.rememberAppHaptic
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,6 +29,8 @@ fun CompletedScreen(
     val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val completedTasks by viewModel.completedTasks.collectAsState()
     var deleteTarget   by remember { mutableStateOf<TaskWithSubTasks?>(null) }
+    val hapticsEnabled by viewModel.haptics.collectAsState()
+    val haptic         = rememberAppHaptic(hapticsEnabled)
 
     Box(modifier = Modifier.fillMaxSize().padding(padding)) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -82,7 +86,8 @@ fun CompletedScreen(
                             taskWithSubTasks = task,
                             modifier         = Modifier.animateItem(),
                             onRestore        = { viewModel.restoreTask(task) },
-                            onDelete         = { deleteTarget = task }
+                            onDelete         = { deleteTarget = task },
+                            haptic           = haptic
                         )
                     }
                 }
@@ -139,7 +144,8 @@ private fun CompletedTaskCard(
     taskWithSubTasks: TaskWithSubTasks,
     modifier: Modifier = Modifier,
     onRestore: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    haptic: (HapticType) -> Unit
 ) {
     val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val task = taskWithSubTasks.task
@@ -228,7 +234,7 @@ private fun CompletedTaskCard(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Button(
-                onClick        = onRestore,
+                onClick = { haptic(HapticType.CONFIRM); onRestore() },
                 modifier       = Modifier.weight(1f),
                 shape          = RoundedCornerShape(12.dp),
                 colors         = ButtonDefaults.buttonColors(containerColor = CoffeeBrown),
@@ -240,7 +246,7 @@ private fun CompletedTaskCard(
                 )
             }
             Button(
-                onClick        = onDelete,
+                onClick = { haptic(HapticType.WARNING); onDelete() },
                 modifier       = Modifier.width(58.dp),
                 shape          = RoundedCornerShape(12.dp),
                 colors         = ButtonDefaults.buttonColors(containerColor = PriorityHigh),
