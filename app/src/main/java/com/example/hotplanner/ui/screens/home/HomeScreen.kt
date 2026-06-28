@@ -2,6 +2,7 @@ package com.example.hotplanner.ui.screens.home
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import com.example.hotplanner.ui.theme.LocalAppColors
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,6 +29,7 @@ fun HomeScreen(
     padding: PaddingValues,
     onNavigateToDetail: (Long) -> Unit
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val activeTasks   by viewModel.activeTasks.collectAsState()
     var showAddTask   by remember { mutableStateOf(false) }
     var deleteTarget  by remember { mutableStateOf<TaskWithSubTasks?>(null) }
@@ -132,6 +134,7 @@ fun HomeScreen(
 
 @Composable
 private fun HomeHeader(taskCount: Int) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -164,6 +167,7 @@ private fun TaskCard(
     onComplete: () -> Unit,
     onDelete: () -> Unit
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val task      = taskWithSubTasks.task
     val doneCount = taskWithSubTasks.subTasks.count { it.isDone }
     val total     = taskWithSubTasks.subTasks.size
@@ -333,6 +337,7 @@ private fun TaskBadge(text: String, bgColor: Color, textColor: Color) {
 
 @Composable
 private fun EmptyState(modifier: Modifier = Modifier) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     Box(
         modifier          = modifier.fillMaxWidth(),
         contentAlignment  = Alignment.Center

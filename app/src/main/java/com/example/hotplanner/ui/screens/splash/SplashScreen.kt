@@ -21,9 +21,11 @@ import androidx.compose.ui.unit.sp
 import com.example.hotplanner.ui.theme.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.example.hotplanner.ui.theme.LocalAppColors
 
 @Composable
 fun SplashScreen(onNavigateToHome: () -> Unit) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
 
     // Auto-navigate after 2.9 seconds
     LaunchedEffect(Unit) {

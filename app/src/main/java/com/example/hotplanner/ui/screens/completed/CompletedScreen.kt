@@ -1,6 +1,7 @@
 package com.example.hotplanner.ui.screens.completed
 
 import androidx.compose.foundation.background
+import com.example.hotplanner.ui.theme.LocalAppColors
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +24,7 @@ fun CompletedScreen(
     viewModel: TaskViewModel,
     padding: PaddingValues
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val completedTasks by viewModel.completedTasks.collectAsState()
     var deleteTarget   by remember { mutableStateOf<TaskWithSubTasks?>(null) }
 
@@ -139,6 +141,7 @@ private fun CompletedTaskCard(
     onRestore: () -> Unit,
     onDelete: () -> Unit
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val task = taskWithSubTasks.task
 
     Column(modifier = modifier.padding(bottom = 14.dp)) {

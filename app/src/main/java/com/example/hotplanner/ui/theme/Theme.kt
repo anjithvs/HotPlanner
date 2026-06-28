@@ -5,9 +5,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 
-private val LightColors = lightColorScheme(
+private val LightColorScheme = lightColorScheme(
     primary              = CoffeeBrown,
     onPrimary            = Color.White,
     primaryContainer     = Latte,
@@ -27,7 +28,7 @@ private val LightColors = lightColorScheme(
     onError              = Color.White,
 )
 
-private val DarkColors = darkColorScheme(
+private val DarkColorScheme = darkColorScheme(
     primary              = Latte,
     onPrimary            = CoffeeDark,
     primaryContainer     = CoffeeBrown,
@@ -52,11 +53,15 @@ fun TaskFlowTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) DarkColors else LightColors
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val appColors   = if (darkTheme) DarkAppColors else AppColors()
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography  = Typography,
-        content     = content
-    )
+    // Provide theme-aware colors to the entire composition tree
+    CompositionLocalProvider(LocalAppColors provides appColors) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography  = Typography,
+            content     = content
+        )
+    }
 }

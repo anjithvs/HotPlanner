@@ -1,6 +1,7 @@
 package com.example.hotplanner.ui.screens.settings
 
 import androidx.compose.foundation.background
+import com.example.hotplanner.ui.theme.LocalAppColors
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +22,7 @@ fun SettingsScreen(
     viewModel: TaskViewModel,
     padding: PaddingValues
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val notifications by viewModel.notifications.collectAsState()
     val haptics       by viewModel.haptics.collectAsState()
     val darkMode      by viewModel.darkMode.collectAsState()
@@ -135,6 +137,7 @@ private fun SettingRow(
     onToggle: () -> Unit,
     showDivider: Boolean
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     Column {
         Row(
             modifier              = Modifier

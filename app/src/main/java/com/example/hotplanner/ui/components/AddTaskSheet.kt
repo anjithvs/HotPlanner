@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.hotplanner.ui.theme.*
 import com.example.hotplanner.ui.utils.formatDueDate
 import java.util.Calendar
+import com.example.hotplanner.ui.theme.LocalAppColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,6 +27,7 @@ fun AddTaskSheet(
             dueDate: String, notification: Boolean) -> Unit,
     onDismiss: () -> Unit
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     var title        by remember { mutableStateOf("") }

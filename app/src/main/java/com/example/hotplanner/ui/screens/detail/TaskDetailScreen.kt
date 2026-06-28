@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.hotplanner.ui.theme.LocalAppColors
 import com.example.hotplanner.data.model.SubTask
 import com.example.hotplanner.data.model.TaskWithSubTasks
 import com.example.hotplanner.ui.components.AddSubtaskSheet
@@ -31,6 +32,7 @@ fun TaskDetailScreen(
     viewModel: TaskViewModel,
     onBack: () -> Unit
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val activeTasks      by viewModel.activeTasks.collectAsState()
     val taskWithSubTasks = remember(activeTasks, taskId) {
         activeTasks.find { it.task.id == taskId }
@@ -154,6 +156,7 @@ fun TaskDetailScreen(
 
 @Composable
 private fun DetailHeader(taskWithSubTasks: TaskWithSubTasks, onBack: () -> Unit) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val task   = taskWithSubTasks.task
     val pColor = priorityColor(task.priority)
 
@@ -256,6 +259,7 @@ private fun SubtaskRow(
     index: Int,
     onToggle: () -> Unit
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     Card(
         modifier  = Modifier
             .fillMaxWidth()
@@ -334,6 +338,7 @@ private fun SubtaskRow(
 
 @Composable
 private fun InsertHereButton(onClick: () -> Unit) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     Row(
         modifier = Modifier
             .fillMaxWidth()

@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.hotplanner.ui.components.CelebrationBanner
 import com.example.hotplanner.ui.components.ConfettiOverlay
+import com.example.hotplanner.ui.theme.LocalAppColors
 import com.example.hotplanner.ui.screens.completed.CompletedScreen
 import com.example.hotplanner.ui.screens.home.HomeScreen
 import com.example.hotplanner.ui.screens.settings.SettingsScreen
@@ -20,6 +21,7 @@ fun MainScreen(
     viewModel: TaskViewModel,
     onNavigateToDetail: (Long) -> Unit
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     var selectedTab by remember { mutableIntStateOf(0) }
 
     val showConfetti    by viewModel.showConfetti.collectAsState()
@@ -57,6 +59,7 @@ fun MainScreen(
 
 @Composable
 private fun HotPlannerBottomBar(selectedTab: Int, onTabSelected: (Int) -> Unit) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     NavigationBar(
         containerColor = CreamCard,
         tonalElevation = 0.dp

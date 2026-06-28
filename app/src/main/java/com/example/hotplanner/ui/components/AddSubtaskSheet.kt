@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.hotplanner.data.model.SubTask
+import com.example.hotplanner.ui.theme.LocalAppColors
 import com.example.hotplanner.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,6 +25,7 @@ fun AddSubtaskSheet(
     onAdd: (text: String, afterIndex: Int, hasNotification: Boolean) -> Unit,
     onDismiss: () -> Unit
 ) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     val sheetState   = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var text         by remember { mutableStateOf("") }
     var afterIndex   by remember { mutableStateOf(defaultAfterIndex) }

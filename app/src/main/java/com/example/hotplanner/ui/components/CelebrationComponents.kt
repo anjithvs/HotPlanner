@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.hotplanner.ui.theme.*
 import kotlinx.coroutines.delay
 import kotlin.random.Random
+import com.example.hotplanner.ui.theme.LocalAppColors
 
 // ── Confetti Rain ──────────────────────────────────────────────────────────────
 
@@ -110,6 +111,7 @@ fun ConfettiOverlay(visible: Boolean, onFinish: () -> Unit) {
 
 @Composable
 fun CelebrationBanner(visible: Boolean) {
+    val (CreamBg, CreamCard, CreamDark, CoffeeDark, Mocha, BorderColor) = LocalAppColors.current
     AnimatedVisibility(
         visible = visible,
         enter   = fadeIn(tween(200)) + scaleIn(spring(Spring.DampingRatioMediumBouncy, Spring.StiffnessMedium)),
