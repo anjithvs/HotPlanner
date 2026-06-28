@@ -110,7 +110,7 @@ fun SettingsScreen(
                 Text("☕", fontSize = 38.sp)
                 Spacer(Modifier.height(10.dp))
                 Text(
-                    "TaskFlow",
+                    "HotPlanner",
                     fontFamily = Poppins, fontWeight = FontWeight.ExtraBold,
                     fontSize = 18.sp, color = CoffeeDark
                 )
