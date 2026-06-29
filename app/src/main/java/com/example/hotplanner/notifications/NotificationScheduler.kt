@@ -61,22 +61,6 @@ class NotificationScheduler @Inject constructor(
         scheduleTask(task)
     }
 
-    // ── Test function — bypasses ALL conditions, fires in 5 seconds ───────────
-
-    fun scheduleTestNotification() {
-        Log.d(TAG, "Test notification enqueued — fires in 5 seconds ⏱️")
-        workManager.enqueue(
-            OneTimeWorkRequestBuilder<TaskReminderWorker>()
-                .setInitialDelay(5, TimeUnit.SECONDS)
-                .setInputData(
-                    workDataOf(
-                        TaskReminderWorker.KEY_TITLE to "📋 Test Reminder",
-                        TaskReminderWorker.KEY_BODY  to "Notifications are working! ✅"
-                    )
-                )
-                .build()
-        )
-    }
 
     private fun workName(taskId: Long) = "task_reminder_$taskId"
 
