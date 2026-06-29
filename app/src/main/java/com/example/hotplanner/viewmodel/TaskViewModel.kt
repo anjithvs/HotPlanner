@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.hotplanner.data.model.SubTask
 import com.example.hotplanner.data.model.Task
 import com.example.hotplanner.data.model.TaskWithSubTasks
+import com.example.hotplanner.notifications.NotificationScheduler
 import com.example.hotplanner.data.preferences.SettingsRepository
 import com.example.hotplanner.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TaskViewModel @Inject constructor(
     private val repository: TaskRepository,
-    private val settings: SettingsRepository
+    private val settings: SettingsRepository,
+    private val notificationScheduler:  NotificationScheduler
 ) : ViewModel() {
 
     // ── Task Streams (auto-update UI whenever DB changes) ─────────────────────
@@ -58,29 +60,31 @@ class TaskViewModel @Inject constructor(
     // ═══════════════════════════════════════════════════════════════════════════
 
     fun addTask(
-        title: String,
-        category: String,
-        priority: String,
-        dueDate: String,
-        notification: Boolean
+        title: String, category: String, priority: String,
+        dueDate: String, notification: Boolean
     ) {
         viewModelScope.launch {
-            repository.insertTask(
-                Task(
-                    title        = title,
-                    category     = category,
-                    priority     = priority,
-                    dueDate      = dueDate,
-                    notification = notification,
-                    orderIndex   = activeTasks.value.size   // Add to end of list
-                )
+            val task = Task(
+                title        = title,
+                category     = category,
+                priority     = priority,
+                dueDate      = dueDate,
+                notification = notification,
+                orderIndex   = activeTasks.value.size
             )
+            val insertedId = repository.insertTask(task)
+
+            // Schedule notification if enabled and due date is set
+            if (notification && dueDate.isNotEmpty()) {
+                notificationScheduler.scheduleTask(task.copy(id = insertedId))
+            }
         }
     }
 
     // Mark task and ALL its subtasks as done → triggers celebration
     fun completeTask(taskWithSubTasks: TaskWithSubTasks) {
         viewModelScope.launch {
+            notificationScheduler.cancelTask(taskWithSubTasks.task.id)  // cancel reminder
             repository.completeTask(taskWithSubTasks)
             triggerCelebration()
         }
@@ -90,11 +94,14 @@ class TaskViewModel @Inject constructor(
     fun restoreTask(taskWithSubTasks: TaskWithSubTasks) {
         viewModelScope.launch {
             repository.restoreTask(taskWithSubTasks)
+            // Re-schedule notification if the task had one
+            notificationScheduler.rescheduleTask(taskWithSubTasks.task)
         }
     }
 
     fun deleteTask(taskWithSubTasks: TaskWithSubTasks) {
         viewModelScope.launch {
+            notificationScheduler.cancelTask(taskWithSubTasks.task.id)  // cancel reminder
             repository.deleteTask(taskWithSubTasks.task)
         }
     }
